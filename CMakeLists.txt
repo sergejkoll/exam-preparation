@@ -4,4 +4,4 @@ project(exam)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(exam main.cpp)
-target_include_directories(exam PUBLIC optional/)
+target_include_directories(exam PUBLIC optional/ safeQueue/)
