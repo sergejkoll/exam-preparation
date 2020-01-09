@@ -777,11 +777,7 @@ int main() {
 #### 18. Сетевое взаимодействие. Berkley sockets. Основные функции для работы с сокетами
 ---
 
-Взаимодействие в сети рассматривается на основе понятия соке-
-тов, которые позволяют приложениям рассматривать сетевые подклю-
-чения как файлы, и программа может читать из сокета или писать в со-
-кет, как она делает это с файлом. Существуют два механизма, предназначенных для сетевого взаи-
-модействия программ, - это сокеты датаграмм, которые используют
+Взаимодействие в сети рассматривается на основе понятия сокетов, которые позволяют приложениям рассматривать сетевые подключения как файлы, и программа может читать из сокета или писать в сокет, как она делает это с файлом. Существуют два механизма, предназначенных для сетевого взаимодействия программ, - это сокеты датаграмм, которые используют
 пользовательский датаграммный протокол (User Datagram Protocol)
 (UDP) без установления соединения, и сокеты, используюющие Протокол управления передачей / Межсетевой протокол (Transmission Control Protocol/Internet Protocol) (TCP/IP), устанавливающий соединение.
 
@@ -792,9 +788,8 @@ int main() {
 ```cpp
 int socket(int domain, int type, int protocol);
  
-int sock_udp = socket(AF_INET,
-      SOCK_DGRAM, IPPROTO_UDP);
-int sock_tcp = socket(AF_INET,SOCK_STREAM, IPPROTO_TCP);
+int sock_udp = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+int sock_tcp = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 ```
 
 Функция bind - связывает сокет с конкретным адресом сетевого интерфейса.
@@ -802,6 +797,20 @@ int sock_tcp = socket(AF_INET,SOCK_STREAM, IPPROTO_TCP);
 int bind(int sockfd,
          const struct sockaddr *addr,
          socklen_t addrlen);
+```
+Где `sockaddr` - семейство структур, описывающих адреса (`sockaddr_in` - для сетевого взаимодействияб `sockaddr_un` для межпроцессорного):
+Структура `sockaddr_in`:
+```cpp
+struct sockaddr_in {
+    short            sin_family;   // e.g. AF_INET
+    unsigned short   sin_port;     // e.g. htons(3490)
+    struct in_addr   sin_addr;     // see struct in_addr, below
+    char             sin_zero[8];  // zero this if you want to
+};
+
+struct in_addr {
+    unsigned long s_addr;  // load with inet_aton()
+};
 ```
 
 Функция listen - переводит сокет в пассивный режим.
