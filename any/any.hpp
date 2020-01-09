@@ -36,8 +36,7 @@ public:
 
     template <class ValueType>
     any& operator=(const ValueType& value) {
-        _ptr.reset(new concrete<typename std::decay<ValueType>::type>(typename std::decay<ValueType>::type(value)));
-        // _ptr.reset(new concrete<ValueType>(value)); не робiт((
+        _ptr.reset(new concrete<ValueType>(value));
         return *this;
     }
 

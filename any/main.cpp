@@ -4,6 +4,9 @@
 int main() {
     any s;
     s = 1;
+
+    std::cout << any_cast<int>(s) << std::endl;
+
     std::string aab = "aab";
     s = aab;
 
