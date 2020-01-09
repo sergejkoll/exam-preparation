@@ -26,9 +26,20 @@ public:
         _queue.push(value);
     }
 
+    /*
+    bool TryPop(T& value) {
+        std::lock_guard<std::mutex> lk(mut);
+        if(data_queue.empty())
+            return false;
+        value=std::move(data_queue.front());
+        data_queue.pop();
+        return true;
+    }    
+    */
     bool TryPop(T& value) {
         std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
-        if(!lock.owns_lock() && _queue.front() == value && !_queue.empty()){
+        if(!lock.owns_lock() && !_queue.empty()){
+            value = std::move(_queue.front());
             _queue.pop();
             return true;
         } else {
