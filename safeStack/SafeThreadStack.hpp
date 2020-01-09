@@ -30,12 +30,14 @@ void SafeStack<T>::Push(const T& value) {
 
 template <class T>
 bool SafeStack<T>::TryPop(T& value) {
-    std::lock_guard<std::mutex> lk{ mut_ };
-    if (!stack_.empty() && stack_.top() == value) {
-        stack_.pop();
-        return true;
+    std::lock_guard<std::mutex> lock (mut_);
+    if (stack_.empty()) {
+        throw empty_stack();
+        return false;
     }
-    return false;
+    value = std::move(stack_.top());
+    stack_.pop();
+    return true;
 }
 
 #endif //EXAM_PREPARATION_SAFETHREADSTACK_HPP
