@@ -7,6 +7,8 @@ Iterator2 merge(Iterator1 first1, Iterator1 last1, Iterator1 first2, Iterator1 l
     auto it2 = first2;
 
     while (it1 != last1 && it2 != last2) {
+        // *(output++) = (*it1 < *it2) ? *(it1++) : *(it2++);
+        
         if (*it1 < *it2) {
             *output = *it1;
             ++it1;
