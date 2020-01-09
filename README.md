@@ -845,8 +845,24 @@ Boost.Asio - кросс-платформенная С++ библиотека д�
 Example:
 ```cpp
 // Initialization
+boost::system::error_code error;
+
 boost::asio::io_service ioService{};
-boost::asio::ip::tcp::socket socket{ioService};
+boost::asio::ip::tcp::socket socket{ioService, error};
+
+...
+...
+
+// Binding to port
+boost::asio::ip::tcp::endpoint endPoint{boost::asio::ip::v_4(), port};
+
+socket.bind(endPoint, error);
+
+...
+...
+
+// Connecting to client
+socket.connect(someEndPoint, error);
 
 ...
 ...
@@ -855,7 +871,6 @@ boost::asio::ip::tcp::socket socket{ioService};
 std::string request;
 request.resize(SOCKET_INPUT_BUFFER_SIZE);
 
-boost::system::error_code error;
 socket.read_some(boost::asio::buffer(request), error);
 if (error) {
   BOOST_LOG_TRIVIAL(error) << "Error while reading from socket : " << error;
