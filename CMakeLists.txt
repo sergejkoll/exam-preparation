@@ -11,4 +11,5 @@ target_include_directories(exam PUBLIC
         smartPointers/
         guards/
         algorithms/
+        containers/
 )
