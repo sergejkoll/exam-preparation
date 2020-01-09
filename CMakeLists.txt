@@ -10,4 +10,5 @@ target_include_directories(exam PUBLIC
         safeStack/
         smartPointers/
         guards/
+        algorithms/
 )
