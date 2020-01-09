@@ -841,7 +841,39 @@ int accept(int sockfd,
 (UDP) без установления соединения, и сокеты, используюющие Протокол управления передачей / Межсетевой протокол (Transmission Control Protocol/Internet Protocol) (TCP/IP), устанавливающий соединение.
 
 Boost.Asio - кросс-платформенная С++ библиотека для программирования сетевых приложений и других низкоуровневых программ ввода/вывода.
- EXAMPLESPLS?
+
+Example:
+```cpp
+// Initialization
+boost::asio::io_service ioService{};
+boost::asio::ip::tcp::socket socket{ioService};
+
+...
+...
+
+// Read-write
+std::string request;
+request.resize(SOCKET_INPUT_BUFFER_SIZE);
+
+boost::system::error_code error;
+socket.read_some(boost::asio::buffer(request), error);
+if (error) {
+  BOOST_LOG_TRIVIAL(error) << "Error while reading from socket : " << error;
+  return error;
+}
+
+std::string response = HandleRequest(request, error);
+if (error) {
+  BOOST_LOG_TRIVIAL(error) << "Error while handling request : " << error;
+  return error;
+}
+
+socket.write_some(boost::asio::buffer(response), error);
+if (error) {
+  BOOST_LOG_TRIVIAL(error) << "Error while writing to socket : " << error;
+  return error;
+}
+```
 
 #### 20. Переключение контекста потоков. Класс std::thread. Ключевое слово thread_local. Примеры использования std::thread.
 ---
