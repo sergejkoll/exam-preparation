@@ -15,11 +15,10 @@ void MultiThreadingSort(IT1 first, IT1 last) {
         std::sort(first, half);
         std::sort(half, last);
     } else {
-        std::thread firstThread(MultiThreadingSort<IT1, MinFragmentSize>, first, half);
-        std::thread secondThread(MultiThreadingSort<IT1, MinFragmentSize>, half, last);
-
-        firstThread.join();
-        secondThread.join();
+        std::thread thread(MultiThreadingSort<IT1, MinFragmentSize>, first, half);
+        MultiThreadingSort<IT1, MinFragmentSize>(half, last);
+        
+        thread.join();
     }
 
     std::vector<typename IT1::value_type> merged(distance);
@@ -34,10 +33,7 @@ void MultiThreadingSort(IT1 first, IT1 last) {
 }
 
 int main() {
-    std::vector<int> vec;
-    for (size_t i = 10000; i != 0; --i) {
-        vec.push_back(i);
-    }
+    std::vector<int> vec{10, 11, 12, 1, 2, 3};
 
     for (const auto& item : vec) {
         std::cout << item << " ";
@@ -57,3 +53,4 @@ int main() {
 
     return 0;
 }
+
