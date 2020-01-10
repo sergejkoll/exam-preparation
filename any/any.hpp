@@ -76,20 +76,23 @@ private:
 };
 
 template<class ValueType>
-ValueType any_cast(any& val) {
-    if (val._ptr->type() != typeid(ValueType))
+ValueType any_cast(const any& val) {
+    if (val._ptr->type() != typeid(ValueType)) {
         throw std::bad_cast();
+    }
     return static_cast<any::concrete<ValueType>*>(val._ptr.get())->_value;
 }
 
 template<class ValueType>
-ValueType any_cast(const any& val) {
-    return any_cast<ValueType>(any(val));
+ValueType* any::any_cast(any* operand) noexcept {
+    if (operand->_ptr->type() != typeid(ValueType)) {
+        throw std::bad_cast();
+    }
+    return static_cast<ValueType*>(&(operand->_ptr->_value));
 }
 
 template<class ValueType>
-ValueType* any::any_cast(any* operand) noexcept {
-    return const_cast<ValueType *>(any_cast<ValueType>(static_cast<const any *>(operand)));
-}
+const ValueType* any::any_cast(const any* operand) noexcept {
+    return const cast<const ValueType*>(any_cast(operand)));
 
 #endif //INC_9_ANY_ANY_HPP
